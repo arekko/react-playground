@@ -42,28 +42,37 @@ export default class TodoList extends React.Component {
   }
 
   handleToDelete = id => {
-    this.setState(state => {
-      todos: state.todos.filter(todo => todo.id !== id);
-    })
+    this.setState(state => ({
+      todos: state.todos.filter( todo => todo.id !== id)
+    }))
   };
+
+  handleToDeleteAllCompleted = () => {
+    this.setState({
+      todos: this.state.todos.filter(todo => !todo.complete)
+    })
+  }
 
 
   render() {
+    const { todoToShow } = this.state
+    const { todos } = this.state
 
     let todo = []
 
-    if (this.state.todoToShow === 'all') {
-      todo = this.state.todos
-    } else if (this.state.todoToShow === 'complete') {
-      todo = this.state.todos.filter(todo => todo.complete)
-    } else if (this.state.todoToShow === 'active') {
-      todo = this.state.todos.filter(todo => !todo.complete )
+    if (todoToShow === 'all') {
+      todo = todos
+    } else if (todoToShow === 'complete') {
+      todo = todos.filter(todo => todo.complete)
+    } else if (todoToShow === 'active') {
+      todo = todos.filter(todo => !todo.complete )
     }
   
 
 
     return(
       <div>
+      <div>Todos left: {todos.filter(todo => !todo.complete).length}</div>
       <TodoForm onSubmit={this.addTodo}/>
         <button onClick={() => this.changeDisplayFilter("all")}>All</button>
         <button onClick={() => this.changeDisplayFilter("active")} >Active</button>
@@ -72,10 +81,11 @@ export default class TodoList extends React.Component {
         <div>
           <ul>
             {todo.map(note => (
-              <li onClick={() => this.toggleComplete(note.id)}>{note.text}</li>
+              <li onClick={() => this.toggleComplete(note.id)}>{note.text}<button onClick={() => this.handleToDelete(note.id)}>del</button></li>
             ))}
           </ul>
         </div>
+        <button onClick={this.handleToDeleteAllCompleted}>delete all completed</button>
       </div>
     )
   }
