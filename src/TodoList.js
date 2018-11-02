@@ -1,3 +1,4 @@
+import { Todo } from './Todo';
 import React  from 'react'
 import TodoForm from './TodoForm'
 
@@ -81,7 +82,7 @@ export default class TodoList extends React.Component {
         <div>
           <ul>
             {todo.map(note => (
-              <li onClick={() => this.toggleComplete(note.id)}>{note.text}<button onClick={() => this.handleToDelete(note.id)}>del</button></li>
+              <Todo toggleComplete={() => this.toggleComplete(note.id)} handleToDelete={() => this.handleToDelete(note.id)} note={note}/>
             ))}
           </ul>
         </div>
